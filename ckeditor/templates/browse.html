@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load l18n staticfiles %}
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -23,9 +23,9 @@
         <div id="page">
             <div id="container" style="width: 880px">
                 {% if files %}
-                    <h2>Browse for the image you want, then click 'Embed Image' to continue...</h2>
+                    <h2>{% trans 'Browse for the file you want, then click 'Embed Image' or 'Insert Link' to continue...' %}</h2>
                 {% else %}
-                    <h2>No images found. Upload images using the 'Image Button' dialog's 'Upload' tab.</h2>
+                    <h2>{% trans 'No files found. Upload files and images using the 'Image Button' or 'Link' dialog's 'Upload' tab.' %}</h2>
                 {% endif %}
 
                 <!-- Start Advanced Gallery Html Containers -->
@@ -40,7 +40,7 @@
                     <ul class="thumbs noscript">
                         {% for file in files %}
                         <li>
-                            <a class="thumb" href="{{ file.src }}">
+                            <a class="thumb" href="{% if file.is_image %}{{ file.src }}{% else %}{% static file.thumb %}{% endif %}">
                                 <img src="{% if file.is_image %}{{ file.thumb }}{% else %}{% static file.thumb %}{% endif %}" style="max-width: 75px;"/>
                                 {% if file.visible_filename %}
                                     <span class="filename">{{ file.visible_filename }}</span>
@@ -48,7 +48,10 @@
                             </a>
                             <div class="caption">
                                 <div class="submit-row">
-                                    <input href="{{ file.src }}" class="default {% if file.is_image %}embed{% else %}link{% endif %}" type="submit" name="{% if file.is_image %}_embed{% else %}_link{% endif %}" value="Embed Image" />
+                                    {% if file.is_image %}
+                                    <input href="{{ file.src }}" class="default embed" type="submit" name="_embed" value="{% trans 'Embed Image' %}" />
+                                    {% endif %}
+                                    <input href="{{ file.src }}" class="default embed" type="submit" name="_embed" value="{% trans 'Insert Link' %}" />
                                 </div>
                             </div>
                         </li>
@@ -63,7 +66,7 @@
             function getUrlParam(paramName) {
                 var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
                 var match = window.location.search.match(reParam) ;
- 
+
                 return (match && match.length > 1) ? match[1] : '' ;
             }
             function scale_image() {
@@ -85,6 +88,13 @@
                 window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
                 window.close();
             });
+            // linker
+            $('.link').live('click', function() {
+                var funcNum = getUrlParam('CKEditorFuncNum');
+                var fileUrl = $(this).attr('href');
+                window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                window.close();
+            });
 
             // galleriffic
             jQuery(document).ready(function($) {
@@ -101,7 +111,7 @@
                     fadeSpeed:         'fast',
                     exemptionSelector: '.selected'
                 });
-            
+
                 // Initialize Advanced Galleriffic Gallery
                 var gallery = $('#thumbs').galleriffic({
                     delay:                     2500,

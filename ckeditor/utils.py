@@ -10,7 +10,7 @@ from django.template.defaultfilters import slugify
 
 
 # Non-image file icons, matched from top to bottom
-fileicons_path = '{}/file-icons/'.format(getattr(settings, 'CKEDITOR_FILEICONS_PATH', '/static/ckeditor'))
+fileicons_path = '{}/file-icons/'.format(getattr(settings, 'CKEDITOR_FILEICONS_PATH', 'ckeditor'))
 CKEDITOR_FILEICONS = getattr(settings, 'CKEDITOR_FILEICONS', [
     ('\.pdf$', fileicons_path + 'pdf.png'),
     ('\.doc$|\.docx$|\.odt$', fileicons_path + 'doc.png'),
