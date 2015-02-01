@@ -40,15 +40,15 @@
                     <ul class="thumbs noscript">
                         {% for file in files %}
                         <li>
-                            <a class="thumb" href="{% if file.is_image %}{{ file.src }}{% else %}{{ file.thumb }}{% endif %}">
-                                <img src="{{ file.thumb }}" style="max-width: 75px;"/>
+                            <a class="thumb" href="{{ file.src }}">
+                                <img src="{% if file.is_image %}{{ file.thumb }}{% else %}{% static file.thumb %}{% endif %}" style="max-width: 75px;"/>
                                 {% if file.visible_filename %}
                                     <span class="filename">{{ file.visible_filename }}</span>
                                 {% endif %}
                             </a>
                             <div class="caption">
                                 <div class="submit-row">
-                                    <input href="{{ file.src }}" class="default embed" type="submit" name="_embed" value="Embed Image" />
+                                    <input href="{{ file.src }}" class="default {% if file.is_image %}embed{% else %}link{% endif %}" type="submit" name="{% if file.is_image %}_embed{% else %}_link{% endif %}" value="Embed Image" />
                                 </div>
                             </div>
                         </li>
