@@ -23,9 +23,9 @@
         <div id="page">
             <div id="container" style="width: 880px">
                 {% if files %}
-                    <h2>{% trans 'Browse for the file you want, then click "Embed Image" or "Insert Link" to continue...' %}</h2>
+                    <h2>{% blocktrans %}Browse for the file you want, then click "Embed Image" or "Insert Link" to continue...{% endblocktrans %}</h2>
                 {% else %}
-                    <h2>{% trans 'No files found. Upload files and images using the "Image Button" or "Link" dialog's "Upload" tab.' %}</h2>
+                    <h2>{% blocktrans %}No files found. Upload files and images using the "Image Button" or "Link" dialog's "Upload" tab.{% endblocktrans %}</h2>
                 {% endif %}
 
                 <!-- Start Advanced Gallery Html Containers -->
